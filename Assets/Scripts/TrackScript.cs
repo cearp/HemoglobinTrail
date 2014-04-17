@@ -12,13 +12,14 @@ public class TrackScript : MoveScript {
 
 	private float angle;
 	private bool isEnemy;
+	private GameObject[] enemies;
 
 	// Use this for initialization	
 	void Start () {
 		isEnemy = gameObject.GetComponent<ShotScript> ().isEnemyShot;
 
 		if (!isEnemy) {
-			GameObject[] enemies = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+			enemies = FindObjectsOfType(typeof(GameObject)) as GameObject[];
 
 			float nearestDistanceSqr = Mathf.Infinity; 
 			// loop through each tagged object, remembering nearest one found
@@ -38,7 +39,6 @@ public class TrackScript : MoveScript {
 		}
 		if (target == null) 
 			targetPos.position = new Vector3 (transform.position.x, transform.position.y, -2.5f);
-		magnitude = 0;
 	}
 	
 	// Update is called once per frame
@@ -47,27 +47,42 @@ public class TrackScript : MoveScript {
 		//if (Mathf.FloorToInt() % 2)
 			//target = FindObjectOfType (target);
 
-		if (target != null) {
-			targetPos.position = target.transform.position;
-			var dir = transform.position - targetPos.position;
-			var angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
-			var newRotation = Quaternion.AngleAxis (angle + 180, Vector3.forward);
-			transform.rotation = Quaternion.Slerp (transform.rotation, newRotation, Time.deltaTime * turnSpeed);
+		if (target == null && enemies.Length > 0) {
 
-			Debug.DrawLine (targetPos.position, transform.position, Color.yellow);
+			Start();
+
+		} else if (target != null) {
+				setTargetPos(target.transform.position);
+				
+				//movement = new Vector2 (Mathf.Cos (transform.eulerAngles.z) * magnitude, Mathf.Sin (transform.eulerAngles.z) * magnitude);
+				if (magnitude < maxSpeed) magnitude += accelerate * Time.deltaTime;
+				else if (magnitude > maxSpeed) magnitude = maxSpeed;
+		} else {
+			setTargetPos(transform.position + new Vector3(movement.x, movement.y));
+			if (magnitude < maxSpeed) magnitude += accelerate * Time.deltaTime;
+			else if (magnitude > maxSpeed) magnitude = maxSpeed;
+			//movement = new Vector2 (Mathf.Cos(transform.eulerAngles.z) * magnitude, Mathf.Sin(transform.eulerAngles.z) * magnitude);
 		}
 
-		if (magnitude < maxSpeed) magnitude += accelerate * Time.deltaTime;
-		else if (magnitude > maxSpeed) magnitude = maxSpeed;
-		
-		movement = new Vector2 (Mathf.Cos(transform.eulerAngles.z) * magnitude, Mathf.Sin(transform.eulerAngles.z) * magnitude);
+
+	}
+
+	void setTargetPos(Vector3 thisSpot){
+
+		targetPos.position = thisSpot;
+		var dir = transform.position - targetPos.position;
+		var angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+		var newRotation = Quaternion.AngleAxis (angle + 90, Vector3.forward);
+		transform.rotation = Quaternion.Slerp (transform.rotation, newRotation, Time.deltaTime * Random.Range( turnSpeed * .5f, turnSpeed * 2f));
 
 	}
 
 	void FixedUpdate()
 	{
 		// Apply movement to the rigidbody
-		rigidbody2D.velocity = movement;
+		//rigidbody2D.velocity = movement;
 
+		rigidbody2D.velocity = transform.up * magnitude;
+		
 	}
 }
