@@ -11,6 +11,7 @@ public class ShotScript : MonoBehaviour
 	/// Damage inflicted
 	/// </summary>
 	public float damage = 1;
+	public int lifetime = 5;
 
 	/// <summary>
 	/// Cooldown in seconds between two shots
@@ -28,6 +29,6 @@ public class ShotScript : MonoBehaviour
 	void Start()
 	{
 		// 2 - Limited time to live to avoid any leak
-		Destroy(gameObject, 5); // 5sec
+		Destroy(gameObject, lifetime); // 5sec
 	}
 }

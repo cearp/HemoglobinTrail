@@ -18,7 +18,7 @@ public class MoveScript : MonoBehaviour
 	/// </summary>
 	public Vector2 direction = new Vector2(-1, 0);
 	
-	private Vector2 movement;
+	protected Vector2 movement;
 	
 	void Update()
 	{

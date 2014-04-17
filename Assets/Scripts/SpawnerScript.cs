@@ -7,17 +7,21 @@ public class SpawnerScript : MonoBehaviour {
 	public Vector3[] spawnOffset;	//Where does each matching prefab spawn?
 	public float delay;			//How long until I spawn it
 	public bool destroySelf;	//Do I need to destroy the spawner after one spawn
-	public float lifetime;		//Destroy the spawner after lifetime is up
+	public float lifetime = 999;		//Destroy the spawner after lifetime is up
 	public bool isEnemy;
 
 	protected Vector2 inheritSpeed;
-	protected float coolDown = 1; 	//For counting
+	protected float coolDown = 0; 	//For counting
 
 
 	// Use this for initialization
 	void Start () {
-		if (lifetime < 999)
+		if (lifetime == 0)
+			Update ();
+		if (lifetime < 999f) 
 			Destroy (gameObject, lifetime);
+					
+				
 	}
 
 	public void setInheritSpeed(Vector2 newSpeed){
@@ -45,8 +49,9 @@ public class SpawnerScript : MonoBehaviour {
 					go.transform.position = new Vector3 (transform.position.x + spawnOffset [i].x, transform.position.y + spawnOffset [i].y, transform.position.z);
 			}
 			coolDown = delay;
-			if (destroySelf) 
+			if (destroySelf){
 					Destroy (gameObject);
+			}
 			
 		} else 
 			coolDown -= Time.deltaTime;

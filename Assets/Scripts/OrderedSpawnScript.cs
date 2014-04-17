@@ -12,10 +12,15 @@ public class OrderedSpawnScript : SpawnerScript {
 	
 	// Use this for initialization
 	void Start () {
+		if (!isEnemy) {
+				player = GameObject.Find ("player").GetComponent<playerScript> ();
+				currentBullet = player.getCurrBull ();
+		}
+		if (lifetime == 0)
+			Update ();
 		if (lifetime < 999)
 			Destroy (gameObject, lifetime);
-		player = GameObject.Find ("player").GetComponent<playerScript>();
-		currentBullet = player.getCurrBull();
+
 	}
 	 
 	// Update is called once per frame

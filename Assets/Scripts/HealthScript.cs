@@ -9,7 +9,7 @@ public class HealthScript : MonoBehaviour
 	/// Total hitpoints
 	/// </summary>
 	public float hp = 1;
-	public int iFrames = 160;
+	public int iFrames = 320;
 	
 	/// <summary>
 	/// Enemy or player?
@@ -57,6 +57,7 @@ public class HealthScript : MonoBehaviour
 					player.transform.position = Camera.main.transform.position + new Vector3(0, 0, 8);
 					p.invulnerable = iFrames;
 					player.collider2D.enabled = false;
+					player.renderer.enabled = false;
 					GameManagerScript.Instance.Lives--;
 				} else {
 					// Game Over.

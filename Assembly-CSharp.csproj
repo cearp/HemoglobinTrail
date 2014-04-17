@@ -63,6 +63,7 @@
      <Compile Include="Assets\Scripts\SoundEffectsHelper.cs" />
      <Compile Include="Assets\Scripts\SpawnerScript.cs" />
      <Compile Include="Assets\Scripts\SpecialEffectsHelper.cs" />
+     <Compile Include="Assets\Scripts\TrackScript.cs" />
      <Compile Include="Assets\Scripts\WeaponScript.cs" />
      <Compile Include="Assets\Scripts\playerScript.cs" />
   </ItemGroup>
