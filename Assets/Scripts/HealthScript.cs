@@ -15,6 +15,14 @@ public class HealthScript : MonoBehaviour
 	/// Enemy or player?
 	/// </summary>
 	public bool isEnemy = true;
+
+	//-----------------------Added stuff for background-----------------------//
+	public float enemyRed = 0.1f;  //amount the water will be red per enemy
+	private int enemyDeath;
+	
+	private GameObject[] oceans;
+	private Color blood;
+	//--
 	
 	/// <summary>
 	/// Inflicts damage and check if the object should be destroyed
@@ -70,6 +78,16 @@ public class HealthScript : MonoBehaviour
 			}
 
 			// Dead!
+			//-----------------------Added stuff for background-----------------------//
+			enemyDeath = GameManagerScript.Instance.enemiesDead++;
+			oceans = GameObject.FindGameObjectsWithTag("background");
+			
+			foreach (GameObject ocean in oceans) {
+				blood = ocean.renderer.material.color;
+				blood.a -= enemyRed;
+				ocean.renderer.material.color = blood;
+			}
+			//------------------------------------------------------------------------//
 			Destroy(gameObject);
 		}
 
