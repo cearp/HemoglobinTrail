@@ -22,7 +22,8 @@ public class HealthScript : MonoBehaviour
 	
 	private GameObject[] oceans;
 	private Color blood;
-	//--
+	//------------------------------------------------------------------------//
+
 	
 	/// <summary>
 	/// Inflicts damage and check if the object should be destroyed
@@ -60,6 +61,8 @@ public class HealthScript : MonoBehaviour
 			else {
 				if (GameManagerScript.Instance.Lives > 0){
 					GameObject player = Instantiate(Resources.Load("Prefabs/player")) as GameObject;
+					ParticleSystem particlesystem = (ParticleSystem)player.GetComponentInChildren<ParticleSystem>();
+					particlesystem.enableEmission = false;
 					player.name = "player";
 					playerScript p = player.GetComponent<playerScript>();
 					player.transform.position = Camera.main.transform.position + new Vector3(0, 0, 8);
@@ -78,6 +81,7 @@ public class HealthScript : MonoBehaviour
 			}
 
 			// Dead!
+			Destroy(gameObject);
 			//-----------------------Added stuff for background-----------------------//
 			enemyDeath = GameManagerScript.Instance.enemiesDead++;
 			oceans = GameObject.FindGameObjectsWithTag("background");
@@ -88,7 +92,7 @@ public class HealthScript : MonoBehaviour
 				ocean.renderer.material.color = blood;
 			}
 			//------------------------------------------------------------------------//
-			Destroy(gameObject);
+
 		}
 
 	}

@@ -5,10 +5,11 @@ using System.Collections.Generic;
 public class TrackScript : MoveScript {
 
 	public GameObject target;	//Home in on this thing
-	public Transform targetPos; //This is where
+	public Vector3 targetPos; //This is where
 	public float magnitude;		//How fast do you home in on the target
 	public float accelerate;	//How fast does this speed up
 	public float maxSpeed;		//Max speed?
+	public bool findNew;		//When old target is gone, do you find a new one?
 
 	private float angle;
 	private bool isEnemy;
@@ -31,14 +32,14 @@ public class TrackScript : MoveScript {
 					
 					if (distanceSqr < nearestDistanceSqr) {
 						target = go;
-						targetPos = target.transform;
+						targetPos = target.transform.position;
 						nearestDistanceSqr = distanceSqr;
 					}
 				}
 			}
 		}
 		if (target == null) 
-			targetPos.position = new Vector3 (transform.position.x, transform.position.y, -2.5f);
+			targetPos = new Vector3 (transform.position.x, transform.position.y, -2.5f);
 	}
 	
 	// Update is called once per frame
@@ -47,9 +48,9 @@ public class TrackScript : MoveScript {
 		//if (Mathf.FloorToInt() % 2)
 			//target = FindObjectOfType (target);
 
-		if (target == null && enemies.Length > 0) {
-
-			Start();
+		if (target == null && findNew) {
+			if (enemies.Length > 0)
+				Start();
 
 		} else if (target != null) {
 				setTargetPos(target.transform.position);
@@ -58,7 +59,7 @@ public class TrackScript : MoveScript {
 				if (magnitude < maxSpeed) magnitude += accelerate * Time.deltaTime;
 				else if (magnitude > maxSpeed) magnitude = maxSpeed;
 		} else {
-			setTargetPos(transform.position + new Vector3(movement.x, movement.y));
+			setTargetPos(transform.position + new Vector3(rigidbody2D.velocity.x, rigidbody2D.velocity.y));
 			if (magnitude < maxSpeed) magnitude += accelerate * Time.deltaTime;
 			else if (magnitude > maxSpeed) magnitude = maxSpeed;
 			//movement = new Vector2 (Mathf.Cos(transform.eulerAngles.z) * magnitude, Mathf.Sin(transform.eulerAngles.z) * magnitude);
@@ -68,9 +69,8 @@ public class TrackScript : MoveScript {
 	}
 
 	void setTargetPos(Vector3 thisSpot){
-
-		targetPos.position = thisSpot;
-		var dir = transform.position - targetPos.position;
+		targetPos = thisSpot;
+		var dir = transform.position - targetPos;
 		var angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
 		var newRotation = Quaternion.AngleAxis (angle + 90, Vector3.forward);
 		transform.rotation = Quaternion.Slerp (transform.rotation, newRotation, Time.deltaTime * Random.Range( turnSpeed * .5f, turnSpeed * 2f));

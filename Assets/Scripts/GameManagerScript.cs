@@ -13,7 +13,6 @@ public class GameManagerScript : MonoBehaviour
 	public int Score = 0;
 	public int ScrollSpeed = 1;
 	public int wavesCleared = 0;
-
 	public int enemiesDead = 0;
 
 	public List<GameObject> waves = new List<GameObject>();

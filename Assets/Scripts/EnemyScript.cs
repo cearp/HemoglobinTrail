@@ -10,9 +10,9 @@ public class EnemyScript : MonoBehaviour
 	public int formScoreBoost = 0;
 	public int scoreValue;
 
-	private bool hasSpawn;
-	private MoveScript moveScript;
-	private WeaponScript[] weapons;
+	protected bool hasSpawn;
+	protected MoveScript moveScript;
+	protected WeaponScript[] weapons;
 	
 	void Awake()
 	{
