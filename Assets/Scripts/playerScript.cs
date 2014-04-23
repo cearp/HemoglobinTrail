@@ -98,6 +98,7 @@ public class playerScript : MonoBehaviour
 				invulnerable--;
 				ParticleSystem particlesystem = (ParticleSystem)gameObject.GetComponentInChildren<ParticleSystem>();
 				particlesystem.enableEmission = true;
+				collider2D.enabled = true;
 		}
 
 	}
@@ -110,11 +111,12 @@ public class playerScript : MonoBehaviour
 		EnemyScript enemy = collision.gameObject.GetComponent<EnemyScript>();
 		if (invulnerable <= 0) {
 			if (enemy != null) {
-				Destroy(enemy.gameObject);
-					// Kill the enemy
-					//HealthScript enemyHealth = enemy.GetComponent<HealthScript> ();
-					//if (enemyHealth != null)
-							//enemyHealth.Damage (enemyHealth.hp);
+				Debug.LogWarning("Boom");
+				//Destroy(enemy.gameObject);
+					//Kill the enemy
+					HealthScript enemyHealth = enemy.GetComponent<HealthScript> ();
+					if (enemyHealth != null)
+							enemyHealth.Damage (enemyHealth.hp);
 
 					damagePlayer = true;
 			}

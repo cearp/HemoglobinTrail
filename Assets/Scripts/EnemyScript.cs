@@ -16,6 +16,10 @@ public class EnemyScript : MonoBehaviour
 	
 	void Awake()
 	{
+		Init ();
+	}
+
+	public void Init(){
 		// Retrieve the weapon only once
 		weapons = GetComponentsInChildren<WeaponScript>();
 		
@@ -54,9 +58,9 @@ public class EnemyScript : MonoBehaviour
 			weapon.enabled = false;
 		}
 	}
-	
-	void Update()
-	{
+
+	protected void shootAndCheck(){
+
 		// 2 - Check if the enemy has spawned.
 		if (hasSpawn == false)
 		{
@@ -85,6 +89,12 @@ public class EnemyScript : MonoBehaviour
 				Destroy(gameObject);
 			}
 		}
+
+	}
+	
+	void Update()
+	{
+		shootAndCheck();
 	}
 	
 	// 3 - Activate itself.
