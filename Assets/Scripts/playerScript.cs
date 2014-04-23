@@ -115,7 +115,7 @@ public class playerScript : MonoBehaviour
 				//Destroy(enemy.gameObject);
 					//Kill the enemy
 					HealthScript enemyHealth = enemy.GetComponent<HealthScript> ();
-					if (enemyHealth != null)
+					if (enemyHealth != null && !enemy.isBoss)
 							enemyHealth.Damage (enemyHealth.hp);
 
 					damagePlayer = true;

@@ -20,23 +20,32 @@ public class TrackScript : MoveScript {
 		isEnemy = gameObject.GetComponent<ShotScript> ().isEnemyShot;
 
 		if (!isEnemy) {
-			enemies = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+			enemies = FindObjectsOfType (typeof(GameObject)) as GameObject[];
 
 			float nearestDistanceSqr = Mathf.Infinity; 
 			// loop through each tagged object, remembering nearest one found
 			foreach (GameObject go in enemies) {
-				EnemyScript checkEnemy = go.GetComponent<EnemyScript>();
-				if (checkEnemy != null){
-					Transform objectPos = go.transform;
-					float distanceSqr = (objectPos.position - transform.position).sqrMagnitude;
-					
-					if (distanceSqr < nearestDistanceSqr) {
-						target = go;
-						targetPos = target.transform.position;
-						nearestDistanceSqr = distanceSqr;
+					EnemyScript checkEnemy = go.GetComponent<EnemyScript> ();
+					if (checkEnemy != null) {
+							Transform objectPos = go.transform;
+							float distanceSqr = (objectPos.position - transform.position).sqrMagnitude;
+		
+							if (distanceSqr < nearestDistanceSqr) {
+									target = go;
+									targetPos = target.transform.position;
+									nearestDistanceSqr = distanceSqr;
+							}
 					}
-				}
 			}
+		} else {
+			target = GameObject.Find("player");
+			if (target != null){
+				targetPos = target.transform.position;
+				var dir = transform.position - targetPos;
+				var angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+				transform.rotation = Quaternion.AngleAxis (angle + 90, Vector3.forward);
+			}
+
 		}
 		if (target == null) 
 			targetPos = new Vector3 (transform.position.x, transform.position.y, -2.5f);

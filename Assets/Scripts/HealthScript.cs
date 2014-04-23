@@ -15,6 +15,7 @@ public class HealthScript : MonoBehaviour
 	/// Enemy or player?
 	/// </summary>
 	public bool isEnemy = true;
+	public bool isBullet = false;
 
 	//-----------------------Added stuff for background-----------------------//
 	public float enemyRed = 0.1f;  //amount the water will be red per enemy
@@ -41,21 +42,23 @@ public class HealthScript : MonoBehaviour
 
 			if (isEnemy){
 
-				EnemyScript en = gameObject.GetComponent<EnemyScript>();
-				FormationScript wave = GameManagerScript.Instance.waves[en.formationID].GetComponent<FormationScript>();
+				if (!isBullet){
+					EnemyScript en = gameObject.GetComponent<EnemyScript>();
+					FormationScript wave = GameManagerScript.Instance.waves[en.formationID].GetComponent<FormationScript>();
 
 
-				wave.reduceEnemyCount();
-				GameManagerScript.Instance.incrementScore(en.scoreValue);
+					wave.reduceEnemyCount();
+					GameManagerScript.Instance.incrementScore(en.scoreValue);
 
-				if (wave.getEnemyCount() <= 0 && !wave.droppedPup){
+					if (wave.getEnemyCount() <= 0 && !wave.droppedPup){
 
-					if (wave.powerUp != null){
-						GameObject go = Instantiate(wave.powerUp) as GameObject;
-						go.transform.position = transform.position;
+						if (wave.powerUp != null){
+							GameObject go = Instantiate(wave.powerUp) as GameObject;
+							go.transform.position = transform.position;
+						}
+						GameManagerScript.Instance.incrementScore(wave.scoreBonus);
+						wave.droppedPup = true;
 					}
-					GameManagerScript.Instance.incrementScore(wave.scoreBonus);
-					wave.droppedPup = true;
 				}
 			}
 			else {
@@ -65,7 +68,7 @@ public class HealthScript : MonoBehaviour
 					particlesystem.enableEmission = false;
 					player.name = "player";
 					playerScript p = player.GetComponent<playerScript>();
-					player.transform.position = Camera.main.transform.position + new Vector3(0, 0, 8);
+					player.transform.position = Camera.main.transform.position + new Vector3(0, -24, 8);
 					p.invulnerable = iFrames;
 					player.collider2D.enabled = false;
 					player.renderer.enabled = false;

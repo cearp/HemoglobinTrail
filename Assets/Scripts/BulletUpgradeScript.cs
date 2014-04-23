@@ -19,7 +19,7 @@ public class BulletUpgradeScript : PowerupScript {
 	void Start()
 	{
 		// 2 - Limited time to live to avoid any leak
-		Destroy(gameObject, 5); // 5sec
+		Destroy(gameObject, 10); // 5sec
 	}
 	
 }

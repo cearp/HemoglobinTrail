@@ -5,6 +5,7 @@ public class PowerupScript : MonoBehaviour {
 
 	public Vector2 speed = new Vector2(0, 0);
 
+	protected MoveScript moveScript;
 	protected float speedMod = 1;
 	protected Vector2 movement;
 
@@ -12,11 +13,15 @@ public class PowerupScript : MonoBehaviour {
 	void Start () {
 		speedMod = Mathf.Sin (Time.time);
 	}
+
+	void Awake(){
+		moveScript = GetComponent<MoveScript> ();
+	}
 	
 	// Update is called once per frame
 	void Update () {
-		speedMod = Mathf.Sin (Time.time);
-		movement = new Vector2 (speed.x * speedMod, speed.y);
+		speedMod = Mathf.Sin (Time.time * 1.5f);
+		moveScript.speed = new Vector2 (speed.x * speedMod, moveScript.speed.y);
 
 		// 6 - Make sure we are not outside the camera bounds
 		var dist = (transform.position - Camera.main.transform.position).z;

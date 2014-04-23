@@ -54,6 +54,11 @@ public class WeaponScript : MonoBehaviour
 			GameObject shotObj = Instantiate(shotPrefab) as GameObject;
 			SpawnerScript ifSpawner = shotObj.GetComponent<SpawnerScript>();
 
+			HealthScript hp = shotObj.GetComponent<HealthScript>();
+
+			if (hp != null)
+				hp.isBullet = true;
+
 			if (ifSpawner == null){
 				MoveScript moveSpeed = shotObj.GetComponent<MoveScript>();
 				moveSpeed.speed += inheritSpeed;

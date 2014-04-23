@@ -9,6 +9,7 @@ public class EnemyScript : MonoBehaviour
 	public GameObject powerUp;
 	public int formScoreBoost = 0;
 	public int scoreValue;
+	public bool isBoss;
 
 	protected bool hasSpawn;
 	protected MoveScript moveScript;
@@ -16,26 +17,24 @@ public class EnemyScript : MonoBehaviour
 	
 	void Awake()
 	{
-		Init ();
+		Wake ();
 	}
 
-	public void Init(){
+	public void Wake(){
 		// Retrieve the weapon only once
 		weapons = GetComponentsInChildren<WeaponScript>();
 		
 		// Retrieve scripts to disable when not spawn
 		moveScript = GetComponent<MoveScript>();
 	}
-	
-	// 1 - Disable everything
-	void Start()
-	{
-		hasSpawn = false;
 
+	protected void Init(){
+		hasSpawn = false;
+		
 		if (GameManagerScript.Instance.waves.Count < formationID + 1) {
 			while (GameManagerScript.Instance.waves.Count < formationID + 1)
 				GameManagerScript.Instance.addWave ();
-
+			
 			FormationScript wave = GameManagerScript.Instance.waves [formationID].GetComponent<FormationScript>();
 			wave.powerUp = powerUp;
 			wave.incrementEnemyCount ();
@@ -46,7 +45,7 @@ public class EnemyScript : MonoBehaviour
 			wave.incrementEnemyCount ();
 			wave.scoreBonus = formScoreBoost;
 		}
-
+		
 		// Disable everything
 		// -- collider
 		collider2D.enabled = false;
@@ -57,6 +56,12 @@ public class EnemyScript : MonoBehaviour
 		{
 			weapon.enabled = false;
 		}
+	}
+	
+	// 1 - Disable everything
+	void Start()
+	{
+		Init ();
 	}
 
 	protected void shootAndCheck(){

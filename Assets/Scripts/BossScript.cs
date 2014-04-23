@@ -3,17 +3,21 @@ using System.Collections;
 
 public class BossScript : EnemyScript {
 
+	private float decelerate;
+
 	// Use this for initialization
 	void Start () {
-		
+		base.Init ();
+		isBoss = true;
 	}
 
 	//Activate
 	void Awake(){
-		base.Init ();
+		base.Wake ();
+		isBoss = true;
 	}
 
-	void shootAndCheck(){
+	new void shootAndCheck(){
 
 		// 2 - Check if the enemy has spawned.
 		if (hasSpawn == false)
@@ -36,21 +40,19 @@ public class BossScript : EnemyScript {
 					SoundEffectsHelper.Instance.MakeEnemyShotSound();
 				}
 			}
-			
-			// 4 - Out of the camera ? Destroy the game object.
-			if (renderer.IsVisibleFrom(Camera.main) == false)
-			{
-				Destroy(gameObject);
-			}
+
 		}
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.LogWarning ("Distance: " + Vector3.Distance (FindObjectOfType<playerScript>().transform.position, transform.position));
-		Debug.LogWarning ("Speed: " + moveScript.speed);
 		shootAndCheck ();
+
+		if (decelerate > 0) {
+			moveScript.speed.y -= decelerate * Time.deltaTime / 6	;
+			decelerate -= decelerate * Time.deltaTime / 6;
+		}
 	}
 
 	// 3 - Activate itself.
@@ -67,8 +69,9 @@ public class BossScript : EnemyScript {
 			weapon.enabled = true;
 		}
 		
-		moveScript.speed = new Vector2 (0, 2);
-		moveScript.direction = new Vector2 (1, 1); 
+		decelerate = 6f;
+		moveScript.speed = new Vector2 (0, moveScript.speed.y);
+		moveScript.direction = new Vector2 (1, -1); 
 	}
 
 }
