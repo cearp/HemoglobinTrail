@@ -5,6 +5,7 @@ public class BackgroundScript : MonoBehaviour {
 
 	public float water = 0.05f;
 
+	private bool canMoveOn = false;
 	private GameObject[] oceans;
 	private Color blood;
 
@@ -12,6 +13,20 @@ public class BackgroundScript : MonoBehaviour {
 //	void Start () {
 //	
 //	}
+	private void finish(){
+
+		canMoveOn = true;
+		GameObject go = new GameObject ();
+		go.AddComponent<nextLevelScript> ();
+		go.transform.position = transform.position;
+		playerScript temp = FindObjectOfType<playerScript>();
+		if (temp != null) {
+			temp.setSpeed(new Vector2(0, 32));
+			temp.invulnerable = 999;
+		}
+		GameManagerScript.Instance.kaboom();
+
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -19,9 +34,14 @@ public class BackgroundScript : MonoBehaviour {
 		foreach (GameObject ocean in oceans) {
 			blood = ocean.renderer.material.color;
 			if (blood.a < 1f) {
-				blood.a += water;
-				ocean.renderer.material.color = blood;
-				Debug.Log (blood.a);
+
+				if (blood.a <= 0 && !canMoveOn){
+					finish();
+				} else {
+					blood.a += water;
+					ocean.renderer.material.color = blood;
+				}
+
 			} else {
 				Debug.Log("full opacity");
 			}

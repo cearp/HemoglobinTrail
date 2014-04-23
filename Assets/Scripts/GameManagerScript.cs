@@ -8,15 +8,17 @@ using System.Collections.Generic;
 public class GameManagerScript : MonoBehaviour
 {
 	
-	public int Lives = 3;
-	public int Stage = 1;
-	public int Score = 0;
-	public int ScrollSpeed = 1;
-	public int wavesCleared = 0;
-	public int enemiesDead = 0;
+	public static int Lives = 3;
+	public static int Stage = 1;
+	public static int Score = 0;
+	public static int ScrollSpeed = 1;
+	public static int wavesCleared = 0;
+	public static int enemiesDead = 0;
+	public static GameObject currBull = null;
 
 	public List<GameObject> waves = new List<GameObject>();
 	private static GameManagerScript instance;
+	private string[] stages = new string[]{"Main_Menu", "Stage_One", "Stage_Final"};
 
 	public void addWave(){
 		GameObject go = Instantiate (Resources.Load("Prefabs/FormHolder")) as GameObject;
@@ -31,6 +33,29 @@ public class GameManagerScript : MonoBehaviour
 			}
 			return instance;
 		}
+	}
+
+	public void nextLevel(){
+
+		playerScript temp = FindObjectOfType<playerScript>();
+		if (temp != null)
+			currBull = temp.gameObject.GetComponent<WeaponScript>().shotPrefab;
+
+		Debug.LogWarning (currBull.name);
+
+		if (Stage + 1 < stages.Length) 
+			Application.LoadLevel (stages [Stage + 1]);
+
+	}
+
+	public void kaboom(){
+
+		EnemyScript[] enemies = FindObjectsOfType<EnemyScript> ();
+		foreach (EnemyScript en in enemies) {
+			HealthScript hs = en.GetComponent<HealthScript>();
+			hs.Damage(hs.hp);
+		}
+
 	}
 
 	// Sets instance to null when the application quits

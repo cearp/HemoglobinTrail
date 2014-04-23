@@ -37,7 +37,6 @@ public class HealthScript : MonoBehaviour
 		if (hp <= 0)
 		{
 			// 'Splosion!
-			SpecialEffectsHelper.Instance.Explosion(transform.position);
 			SoundEffectsHelper.Instance.MakeExplosionSound();
 
 			if (isEnemy){
@@ -45,7 +44,7 @@ public class HealthScript : MonoBehaviour
 				if (!isBullet){
 					EnemyScript en = gameObject.GetComponent<EnemyScript>();
 					FormationScript wave = GameManagerScript.Instance.waves[en.formationID].GetComponent<FormationScript>();
-
+					SpecialEffectsHelper.Instance.bloodSplosion(transform.position);
 
 					wave.reduceEnemyCount();
 					GameManagerScript.Instance.incrementScore(en.scoreValue);
@@ -59,10 +58,11 @@ public class HealthScript : MonoBehaviour
 						GameManagerScript.Instance.incrementScore(wave.scoreBonus);
 						wave.droppedPup = true;
 					}
-				}
+				} else
+					SpecialEffectsHelper.Instance.Explosion(transform.position);
 			}
 			else {
-				if (GameManagerScript.Instance.Lives > 0){
+				if (GameManagerScript.Lives > 0){
 					GameObject player = Instantiate(Resources.Load("Prefabs/player")) as GameObject;
 					ParticleSystem particlesystem = (ParticleSystem)player.GetComponentInChildren<ParticleSystem>();
 					particlesystem.enableEmission = false;
@@ -72,7 +72,7 @@ public class HealthScript : MonoBehaviour
 					p.invulnerable = iFrames;
 					player.collider2D.enabled = false;
 					player.renderer.enabled = false;
-					GameManagerScript.Instance.Lives--;
+					GameManagerScript.Lives--;
 				} else {
 					// Game Over.
 					// Add the script to the parent because the current game
@@ -86,7 +86,7 @@ public class HealthScript : MonoBehaviour
 			// Dead!
 			Destroy(gameObject);
 			//-----------------------Added stuff for background-----------------------//
-			enemyDeath = GameManagerScript.Instance.enemiesDead++;
+			enemyDeath = GameManagerScript.enemiesDead++;
 			oceans = GameObject.FindGameObjectsWithTag("background");
 			
 			foreach (GameObject ocean in oceans) {

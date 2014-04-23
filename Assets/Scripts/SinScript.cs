@@ -7,6 +7,7 @@ public class SinScript : MonoBehaviour {
 
 
 	public float Amp;
+	public float Freq;
 
 	//public int freq;
 	// Use this for initialization
@@ -54,7 +55,7 @@ public class SinScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		x++;
+		x = x + Freq;
 		Vector3 movement = new Vector3 (
 			Mathf.Sin(x)*Amp,
 			0,

@@ -16,6 +16,14 @@ public class playerScript : MonoBehaviour
 	// 2 - Store the movement
 	private Vector2 movement;
 	private int currentBullet = 0;
+
+	void Start(){
+		if (GameManagerScript.currBull != null) {
+			var temp = gameObject.GetComponent<WeaponScript> ();
+			temp.shotPrefab = GameManagerScript.currBull;
+			GameManagerScript.currBull = null;
+		}
+	}
 	
 	void Update()
 	{
@@ -82,13 +90,21 @@ public class playerScript : MonoBehaviour
 	public int getCurrBull(){
 		return currentBullet;
 	}
+
+	public void setSpeed(Vector2 newSpeed){
+		speed = newSpeed;
+		// 4 - Movement per direction
+		movement = new Vector2 (
+			speed.x,
+			speed.y);
+	}
 	
 	void FixedUpdate()
 	{
 		// 5 - Move the game object
 		rigidbody2D.velocity = movement;
 		if (invulnerable > 0) {
-				
+			collider2D.enabled = false;
 			invulnerable--;
 			if (invulnerable <= respawning) 
 				gameObject.renderer.enabled = !gameObject.renderer.enabled;
