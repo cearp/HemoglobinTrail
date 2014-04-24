@@ -68,6 +68,7 @@ public class WeaponScript : MonoBehaviour
 			
 			// Assign position
 			shotObj.transform.position = transform.position;
+			shotObj.transform.rotation = transform.rotation;
 
 
 			

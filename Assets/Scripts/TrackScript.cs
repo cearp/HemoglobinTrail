@@ -39,12 +39,12 @@ public class TrackScript : MoveScript {
 			}
 		} else {
 			target = GameObject.Find("player");
-			if (target != null){
-				targetPos = target.transform.position;
-				var dir = transform.position - targetPos;
-				var angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
-				transform.rotation = Quaternion.AngleAxis (angle + 90, Vector3.forward);
-			}
+			//if (target != null){
+			//	targetPos = target.transform.position;
+			//	var dir = transform.position - targetPos;
+			//	var angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+			//	transform.rotation = Quaternion.AngleAxis (angle + 90, Vector3.forward);
+			//}
 
 		}
 		if (target == null) 
