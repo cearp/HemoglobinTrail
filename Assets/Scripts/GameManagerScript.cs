@@ -7,7 +7,9 @@ using System.Collections.Generic;
 /// </summary>
 public class GameManagerScript : MonoBehaviour
 {
-	
+	//score guiobject
+	public GUIElement gui;
+
 	public static int Lives = 3;
 	public static int Stage = 1;
 	public static int Score = 0;
@@ -69,6 +71,9 @@ public class GameManagerScript : MonoBehaviour
 		instance = null;
 	}
 
+	void OnGUI(){
+		gui.guiText.text = ("Lives: "+ Lives +"    Score: " + ((int)(Score)).ToString() +"    Stage "+ Stage);
+	}
 	public void incrementScore(int boost){
 		Score += boost;
 	}
