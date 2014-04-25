@@ -48,6 +48,8 @@ public class HealthScript : MonoBehaviour
 					wave.reduceEnemyCount();
 					GameManagerScript.Instance.incrementScore(en.scoreValue);
 
+					Debug.LogWarning("Enemies Left: " + wave.getEnemyCount());
+
 					if (wave.getEnemyCount() <= 0 && !wave.droppedPup){
 
 						if (wave.powerUp != null){
@@ -79,6 +81,8 @@ public class HealthScript : MonoBehaviour
 					GameObject go = new GameObject();
 					go.AddComponent<GameOverScript>();
 					go.transform.position = transform.position;
+
+					GameManagerScript.Instance.submitScore();
 				}
 			}
 

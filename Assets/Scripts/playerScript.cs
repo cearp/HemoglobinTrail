@@ -112,6 +112,7 @@ public class playerScript : MonoBehaviour
 			
 		}  else if (invulnerable == 0) {
 				invulnerable--;
+				gameObject.renderer.enabled = true;
 				ParticleSystem particlesystem = (ParticleSystem)gameObject.GetComponentInChildren<ParticleSystem>();
 				particlesystem.enableEmission = true;
 				collider2D.enabled = true;

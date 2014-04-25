@@ -18,7 +18,7 @@ public class GameManagerScript : MonoBehaviour
 
 	public List<GameObject> waves = new List<GameObject>();
 	private static GameManagerScript instance;
-	private string[] stages = new string[]{"Main_Menu", "Stage_One", "Stage_Final"};
+	private string[] stages = new string[5]{"Main_Menu", "Stage_One", "Stage_Two", "Stage_Final", "Credits"};
 
 	public void addWave(){
 		GameObject go = Instantiate (Resources.Load("Prefabs/FormHolder")) as GameObject;
@@ -35,16 +35,22 @@ public class GameManagerScript : MonoBehaviour
 		}
 	}
 
+	public void submitScore(){
+		Kongregate.SubmitStatistic ("High Score", Score);
+	}
+
 	public void nextLevel(){
 
 		playerScript temp = FindObjectOfType<playerScript>();
 		if (temp != null)
 			currBull = temp.gameObject.GetComponent<WeaponScript>().shotPrefab;
-
-		Debug.LogWarning (currBull.name);
+		Debug.LogWarning (stages [Stage + 1]);
 
 		if (Stage + 1 < stages.Length) 
 			Application.LoadLevel (stages [Stage + 1]);
+		Score += Stage * 1000;
+		Kongregate.SubmitStatistic ("High Score", Score);
+		Stage++;
 
 	}
 

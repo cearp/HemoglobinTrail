@@ -3,12 +3,14 @@ using System.Collections;
 
 public class BossScript : EnemyScript {
 
-	private float decelerate;
+	public float decelerateTo;
+	private float interval;
 
 	// Use this for initialization
 	void Start () {
 		base.Init ();
 		isBoss = true;
+		interval = moveScript.speed.y - decelerateTo;
 	}
 
 	//Activate
@@ -49,9 +51,10 @@ public class BossScript : EnemyScript {
 	void Update () {
 		shootAndCheck ();
 
-		if (decelerate > 0) {
-			moveScript.speed.y -= decelerate * Time.deltaTime / 6	;
-			decelerate -= decelerate * Time.deltaTime / 6;
+		if (moveScript.speed.y < decelerateTo){
+			moveScript.speed.y = decelerateTo;}
+		else {
+			moveScript.speed.y -= moveScript.speed.y * Time.deltaTime / interval;
 		}
 	}
 
@@ -68,8 +71,7 @@ public class BossScript : EnemyScript {
 		{
 			weapon.enabled = true;
 		}
-		
-		decelerate = 6f;
+
 		moveScript.speed = new Vector2 (0, moveScript.speed.y);
 		moveScript.direction = new Vector2 (1, -1); 
 	}

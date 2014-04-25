@@ -15,7 +15,7 @@ public class MenuScript : MonoBehaviour
 			GUI.Button(
 			// Center in X, 2/3 of the height in Y
 			new Rect(
-			Screen.width / 2 - (buttonWidth / 2),
+			Screen.width / 2 - (buttonWidth / 2) - 100,
 			(2 * Screen.height / 3) - (buttonHeight / 2),
 			buttonWidth,
 			buttonHeight
@@ -27,6 +27,25 @@ public class MenuScript : MonoBehaviour
 			// On Click, load the first level.
 			// "Stage1" is the name of the first scene we created.
 			Application.LoadLevel("Stage_One");
+		}
+
+		// Draw a button to start the game
+		if (
+			GUI.Button(
+			// Center in X, 2/3 of the height in Y
+			new Rect(
+			Screen.width / 2 - (buttonWidth / 2) + 100,
+			(2 * Screen.height / 3) - (buttonHeight / 2),
+			buttonWidth,
+			buttonHeight
+			),
+			"Credits"
+			)
+			)
+		{
+			// On Click, load the first level.
+			// "Stage1" is the name of the first scene we created.
+			Application.LoadLevel("Credits");
 		}
 	}
 }
